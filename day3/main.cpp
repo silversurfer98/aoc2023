@@ -3,6 +3,11 @@
 #include<string>
 #include<fstream>
 #include<memory>
+#include<math.h>
+
+// run command
+// g++ main.cpp -o main && ./main test.txt
+// |/usr/share/apport/apport -p%p -s%s -c%c -d%d -P%P -u%u -g%g -- %E
 
 // all symbols
 // std::string special_char = {'*','@','#','-','=','/','+','%','$','&'};
@@ -74,23 +79,29 @@ void part1(std::unique_ptr<std::vector<std::string>> data)
         {
             for(auto j=0;j<map[i].size();j++)
             {
+                size_t counter=0;
                 if(map[i][j]>0)
-                    for(auto k=1;k<map[i].size();k++)
+                {
+                    for(auto k=1;k<map[i].size()-j;k++)
                     {
-                        size_t counter=0;
-                        if(map[i][j+k]<=0)
+                        if(!(map[i][j+k]<=0))
+                            counter++;
+                        else
                         {
-                            j = j+k;
-                            while(k!=0)
-                            {
-                                map[i][j-1] = map[i][j-1] + map[i][j-k]*10^k;
-                                k--;
-                            }
                             break;
                         }
-                        // map[i][j] =
-                        std::cout<<k<<"\n";
                     }
+                    std::cout<<"counter --> "<<counter<<"\n";
+                    map[i][j] = map[i][j]*std::pow(10,counter);
+                    size_t f = j + counter;
+                    while(counter!=0)
+                    {
+                        counter--;
+                        // map[i][f] = map[i][f] + map[i][j+counter];
+                        std::cout<<"from while --> "<<map[i][j+counter]<<"\n";
+                    }
+                    j = j + counter;
+                }
 
             }
                 std::cout<<"\n";
